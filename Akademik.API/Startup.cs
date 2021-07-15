@@ -77,13 +77,13 @@ namespace Akademik.API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Akademik.API v1"));
             }
             app.UseSession();
-            app.UseAuthentication();
+       
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+     
 
         
             

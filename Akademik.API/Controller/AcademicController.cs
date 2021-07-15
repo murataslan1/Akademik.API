@@ -1,10 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Akademik.API.Classes;
 using Akademik.API.Classes.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Akademik.API.Controller
 {
+    [AllowAnonymous]
     [JwtHandler]
     [Route("api/[controller]/[action]")]
     public class AcademicController : ControllerBase
@@ -27,8 +30,9 @@ namespace Akademik.API.Controller
         [HttpGet]
         public async Task<IActionResult> SearchWId(string id)
         {
+            var token = HttpContext.Request.Headers.FirstOrDefault(b => b.Key.ToLower().Equals("authorization")).Value.ToString();
             
-            return Ok(await _academicClient.SearchWResearcherID(rid: id));
+            return Ok(await _academicClient.SearchWResearcherID(rid: id,token));
             
         }
 
@@ -37,7 +41,7 @@ namespace Akademik.API.Controller
         {
    
          
-            var res = await _academicClient.Verify();
+            var res = await _academicClient.Verify(token);
             return Ok(res);
         }
     }
